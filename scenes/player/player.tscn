@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_controller"]
+[ext_resource type="Script" path="res://scripts/player/body_local_visibility.gd" id="2_visibility"]
+[ext_resource type="PackedScene" path="res://assets/player/body-rigged-animated.glb" id="3_body"]
+[ext_resource type="Script" path="res://scripts/player/view_model.gd" id="4_view"]
+[ext_resource type="PackedScene" path="res://assets/player/fps-hands-rigged-animated.glb" id="5_hands"]
+[ext_resource type="PackedScene" path="res://assets/weapons/M4A1_with_grips.glb" id="6_weapon"]
+[ext_resource type="Script" path="res://scripts/player/player_animation.gd" id="7_animation"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.38
+height = 1.85
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_controller")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.925, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Body" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+script = ExtResource("2_visibility")
+
+[node name="Soldier" parent="Body" instance=ExtResource("3_body")]
+transform = Transform3D(155, 0, 0, 0, 155, 0, 0, 0, 155, 0, 1.818, 0)
+
+[node name="BodyAnimation" type="AnimationPlayer" parent="."]
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+current = true
+near = 0.02
+far = 250.0
+
+[node name="ViewModel" type="Node3D" parent="Head/Camera3D"]
+script = ExtResource("4_view")
+
+[node name="Hands" parent="Head/Camera3D/ViewModel" instance=ExtResource("5_hands")]
+
+[node name="Weapon" parent="Head/Camera3D/ViewModel" instance=ExtResource("6_weapon")]
+
+[node name="ViewAnimation" type="AnimationPlayer" parent="."]
+
+[node name="Animation" type="Node" parent="."]
+script = ExtResource("7_animation")
