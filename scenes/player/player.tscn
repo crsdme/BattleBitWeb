@@ -1,49 +1,34 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://deuldsd7wrlnc"]
 
-[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_controller"]
-[ext_resource type="Script" path="res://scripts/player/body_local_visibility.gd" id="2_visibility"]
-[ext_resource type="PackedScene" path="res://assets/player/body-rigged-animated.glb" id="3_body"]
-[ext_resource type="Script" path="res://scripts/player/view_model.gd" id="4_view"]
-[ext_resource type="PackedScene" path="res://assets/player/fps-hands-rigged-animated.glb" id="5_hands"]
-[ext_resource type="PackedScene" path="res://assets/weapons/M4A1_with_grips.glb" id="6_weapon"]
-[ext_resource type="Script" path="res://scripts/player/player_animation.gd" id="7_animation"]
+[ext_resource type="Script" uid="uid://c2atqr7wmilac" path="res://scripts/player/player.gd" id="1_8afob"]
+[ext_resource type="PackedScene" uid="uid://cy25gf1krer1l" path="res://assets/player/body-rigged-animated.glb" id="3_body"]
+[ext_resource type="Script" uid="uid://dsgon0j554fq6" path="res://scripts/player/animation.gd" id="3_gmlin"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
 radius = 0.38
 height = 1.85
 
-[node name="Player" type="CharacterBody3D"]
-script = ExtResource("1_controller")
+[node name="Player" type="CharacterBody3D" unique_id=1002134607]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+script = ExtResource("1_8afob")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1179211420]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.925, 0)
-shape = SubResource("CapsuleShape3D_body")
+shape = SubResource("CapsuleShape3D_g4v7s")
 
-[node name="Body" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
-script = ExtResource("2_visibility")
+[node name="Head" type="Node3D" parent="." unique_id=57012620]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9064512, -0.20386106)
 
-[node name="Soldier" parent="Body" instance=ExtResource("3_body")]
-transform = Transform3D(155, 0, 0, 0, 155, 0, 0, 0, 155, 0, 1.818, 0)
-
-[node name="BodyAnimation" type="AnimationPlayer" parent="."]
-
-[node name="Head" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
-
-[node name="Camera3D" type="Camera3D" parent="Head"]
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=1198537609]
+transform = Transform3D(1, 0, 0, 0, 0.82511544, 0.5649641, 0, -0.5649641, 0.82511544, 0, 1.0988541, 2.7224333)
 current = true
 near = 0.02
-far = 250.0
 
-[node name="ViewModel" type="Node3D" parent="Head/Camera3D"]
-script = ExtResource("4_view")
+[node name="Body" type="Node3D" parent="." unique_id=1061648010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0082026, 0)
 
-[node name="Hands" parent="Head/Camera3D/ViewModel" instance=ExtResource("5_hands")]
+[node name="Soldier" parent="Body" unique_id=693068540 instance=ExtResource("3_body")]
+transform = Transform3D(155, 0, 0, 0, 155, 0, 0, 0, 155, 0, 0, 0)
 
-[node name="Weapon" parent="Head/Camera3D/ViewModel" instance=ExtResource("6_weapon")]
-
-[node name="ViewAnimation" type="AnimationPlayer" parent="."]
-
-[node name="Animation" type="Node" parent="."]
-script = ExtResource("7_animation")
+[node name="Animation" type="Node3D" parent="." unique_id=443934082]
+script = ExtResource("3_gmlin")
