@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://deuldsd7wrlnc"]
 
 [ext_resource type="Script" uid="uid://c2atqr7wmilac" path="res://scripts/player/player.gd" id="1_8afob"]
-[ext_resource type="PackedScene" uid="uid://cy25gf1krer1l" path="res://assets/player/body-rigged-animated.glb" id="3_body"]
+[ext_resource type="PackedScene" uid="uid://b4faw8gm7dmlf" path="res://assets/player/full-body-rigged-animated.glb" id="2_lvxji"]
+[ext_resource type="PackedScene" path="res://assets/player/body-rigged-animated.glb" id="3_body"]
 [ext_resource type="Script" uid="uid://dsgon0j554fq6" path="res://scripts/player/animation.gd" id="3_gmlin"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
@@ -27,8 +28,12 @@ near = 0.02
 [node name="Body" type="Node3D" parent="." unique_id=1061648010]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0082026, 0)
 
-[node name="Soldier" parent="Body" unique_id=693068540 instance=ExtResource("3_body")]
+[node name="Soldier" parent="Body" unique_id=1238408994 instance=ExtResource("2_lvxji")]
 transform = Transform3D(155, 0, 0, 0, 155, 0, 0, 0, 155, 0, 0, 0)
+
+[node name="SoldierOld" parent="Body" unique_id=693068540 instance=ExtResource("3_body")]
+transform = Transform3D(155, 0, 0, 0, 155, 0, 0, 0, 155, 0, 0, 0)
+visible = false
 
 [node name="Animation" type="Node3D" parent="." unique_id=443934082]
 script = ExtResource("3_gmlin")
