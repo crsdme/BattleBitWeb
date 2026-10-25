@@ -13,7 +13,8 @@ background_mode = 2
 sky = SubResource("Sky_57qmd")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p47bc"]
-albedo_color = Color(0, 0, 0.20392157, 1)
+albedo_color = Color(0, 0, 0, 1)
+metallic_specular = 0.3
 
 [sub_resource type="BoxMesh" id="BoxMesh_dovo2"]
 material = SubResource("StandardMaterial3D_p47bc")
@@ -25,7 +26,7 @@ size = Vector3(60, 1, 60)
 [node name="Map" type="Node3D" unique_id=313359094]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=920884114]
-transform = Transform3D(1, 0, 0, 0, 0.9978089, -0.06616272, 0, 0.06616272, 0.9978089, 0, 29.568062, 0)
+transform = Transform3D(-0.4179335, -0.7613842, 0.4956063, -0.9084776, 0.35026506, -0.22799733, 0, -0.54553497, -0.83808804, -17.712725, 30.589245, -24.776302)
 light_energy = 0.785
 shadow_enabled = true
 
@@ -43,4 +44,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.019470215, 0.24329567, 0.4
 shape = SubResource("BoxShape3D_g4v7s")
 
 [node name="Player" parent="." unique_id=1002134607 instance=ExtResource("1_fwjtt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.48304, 25.175182, -15.256309)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8220005, 18.13334, 2.1438627)

@@ -2,6 +2,9 @@ extends CharacterBody3D
 
 const SPEED := 4.8
 const SPRINT_SPEED := 7.2
+const CROUCH_SPEED := 2.4
+const STAND_HEIGHT := 1.85
+const CROUCH_HEIGHT := 1.0
 const ACCELERATION := 28.0
 const JUMP_VELOCITY := 4.6
 const MOUSE_SENSITIVITY := 0.0022
@@ -9,11 +12,15 @@ const PITCH_LIMIT := 85.0
 
 @onready var head: Node3D = $Head
 @onready var animation: Node = $Animation
-var _in_air := false
+@onready var collision_shape: CollisionShape3D = $Collision
 
+var _in_air := false
+var _crouching := false
+var _head_stand_y := 0.0
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	_head_stand_y = head.position.y
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -36,10 +43,20 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		animation.notify_jumped()
 
+	var wants_crouch := Input.is_action_pressed("crouch")
+	if wants_crouch:
+		_crouching = true
+	elif _crouching and _can_stand():
+		_crouching = false
+	_apply_crouch(_crouching)
+
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0.0, input_dir.y)).normalized()
+	
 	var speed := SPEED
-	if Input.is_action_pressed("sprint"):
+	if _crouching:
+		speed = CROUCH_SPEED
+	elif Input.is_action_pressed("sprint"):
 		speed = SPRINT_SPEED
 
 		
@@ -56,4 +73,25 @@ func _physics_process(delta: float) -> void:
 
 	var horizontal_speed := Vector2(velocity.x, velocity.z).length()
 	var animate_grounded := is_on_floor() or not _in_air
-	animation.update_view(horizontal_speed, animate_grounded, velocity.y)
+	animation.update_view(horizontal_speed, animate_grounded, velocity.y, _crouching)
+
+func _apply_crouch(crouching: bool) -> void:
+	var capsule := collision_shape.shape as CapsuleShape3D
+	var height := CROUCH_HEIGHT if crouching else STAND_HEIGHT
+	capsule.height = height
+	collision_shape.position.y = height * 0.5
+	var drop := STAND_HEIGHT - CROUCH_HEIGHT
+	head.position.y = _head_stand_y - drop if crouching else _head_stand_y
+
+
+func _can_stand() -> bool:
+	var space := get_world_3d().direct_space_state
+	var shape := CapsuleShape3D.new()
+	shape.radius = 0.38
+	shape.height = STAND_HEIGHT
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = shape
+	query.transform = global_transform.translated(Vector3(0.0, STAND_HEIGHT * 0.5 + 0.08, 0.0))
+	query.exclude = [get_rid()]
+	query.collision_mask = collision_mask
+	return space.intersect_shape(query, 1).is_empty()

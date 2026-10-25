@@ -19,7 +19,7 @@ func _ready() -> void:
 	_play("idle")
 
 
-func update_view(horizontal_speed: float, on_floor: bool, _vertical_speed: float) -> void:
+func update_view(horizontal_speed: float, on_floor: bool, _vertical_speed: float, crouching: bool) -> void:
 	if _body_animation == null or _oneshot != "":
 		return
 	var clip := "idle"
@@ -29,6 +29,8 @@ func update_view(horizontal_speed: float, on_floor: bool, _vertical_speed: float
 		clip = "sprint"
 	elif horizontal_speed > 0.15:
 		clip = "walk"
+	elif crouching:
+		clip = "crouch"
 	_play(clip)
 
 
