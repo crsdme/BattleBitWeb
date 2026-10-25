@@ -1,13 +1,24 @@
 [gd_scene format=3 uid="uid://deuldsd7wrlnc"]
 
 [ext_resource type="Script" uid="uid://c2atqr7wmilac" path="res://scripts/player/player.gd" id="1_8afob"]
+[ext_resource type="PackedScene" uid="uid://ctly430qub8q2" path="res://assets/weapons/M4A1-grips.glb" id="2_75vfm"]
 [ext_resource type="PackedScene" uid="uid://b4faw8gm7dmlf" path="res://assets/player/full-body-rigged-animated.glb" id="2_lvxji"]
 [ext_resource type="PackedScene" path="res://assets/player/body-rigged-animated.glb" id="3_body"]
 [ext_resource type="Script" uid="uid://dsgon0j554fq6" path="res://scripts/player/animation.gd" id="3_gmlin"]
+[ext_resource type="Texture2D" uid="uid://cyunvqoisqc7e" path="res://assets/weapons/M4A1_with_grips_Image_0.png" id="4_qek5x"]
+[ext_resource type="Script" uid="uid://tx3jknglqalw" path="res://scripts/player/view_model.gd" id="4_view"]
+[ext_resource type="PackedScene" uid="uid://evjut5iflrpq" path="res://assets/player/fps-hands-rigged-animated.glb" id="5_hands"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
 radius = 0.38
 height = 1.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0owmy"]
+albedo_color = Color(1, 0.45490196, 1, 1)
+albedo_texture = ExtResource("4_qek5x")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qek5x"]
+albedo_color = Color(0.27058825, 1, 0.3254902, 1)
 
 [node name="Player" type="CharacterBody3D" unique_id=1002134607]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
@@ -20,10 +31,26 @@ shape = SubResource("CapsuleShape3D_g4v7s")
 [node name="Head" type="Node3D" parent="." unique_id=57012620]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9064512, -0.20386106)
 
-[node name="Camera3D" type="Camera3D" parent="Head" unique_id=1198537609]
-transform = Transform3D(1, 0, 0, 0, 0.82511544, 0.5649641, 0, -0.5649641, 0.82511544, 0, 1.0988541, 2.7224333)
+[node name="Camera" type="Camera3D" parent="Head" unique_id=1198537609]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.013192892)
 current = true
 near = 0.02
+
+[node name="ViewModel" type="Node3D" parent="Head/Camera" unique_id=978293355]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17909718, 0.3549946)
+script = ExtResource("4_view")
+
+[node name="Weapon" parent="Head/Camera/ViewModel" unique_id=965299652 instance=ExtResource("2_75vfm")]
+transform = Transform3D(0.032635283, 0.0020861742, -0.5991082, 0.035629, 0.59892774, 0.004026368, 0.5980514, -0.035795044, 0.032453075, 0.070997715, -0.30046368, -0.69116056)
+
+[node name="Body" parent="Head/Camera/ViewModel/Weapon/M4A1/Gun" parent_id_path=PackedInt32Array(965299652, 978418285) index="1" unique_id=1406066818]
+surface_material_override/0 = SubResource("StandardMaterial3D_0owmy")
+
+[node name="Hands" parent="Head/Camera/ViewModel" unique_id=873023165 instance=ExtResource("5_hands")]
+transform = Transform3D(-1.5, 0, -2.2649371e-07, 0, 1.5, 0, 2.2649371e-07, 0, -1.5, 0, -0.41504955, -0.46147907)
+
+[node name="FPS_ArmsMesh" parent="Head/Camera/ViewModel/Hands/FPS_Hands_Rig/Skeleton3D" parent_id_path=PackedInt32Array(873023165, 1606915942) index="0" unique_id=830461499]
+surface_material_override/0 = SubResource("StandardMaterial3D_qek5x")
 
 [node name="Body" type="Node3D" parent="." unique_id=1061648010]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0082026, 0)
@@ -37,3 +64,6 @@ visible = false
 
 [node name="Animation" type="Node3D" parent="." unique_id=443934082]
 script = ExtResource("3_gmlin")
+
+[editable path="Head/Camera/ViewModel/Weapon"]
+[editable path="Head/Camera/ViewModel/Hands"]
